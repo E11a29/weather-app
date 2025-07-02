@@ -106,3 +106,50 @@ function formatUnixTime(unixTime) {
   
   return hours + ':' + minutes;
 }
+
+export const getElements = () => ({
+  cityInput: document.getElementById('cityInput'),
+  unitSelect: document.getElementById('unit-select'),
+  langSelect: document.getElementById('lang-select'),
+  weatherDisplay: document.getElementById('weatherResult')
+});
+
+export const updateWeatherUI = (data, cityName) => {
+  const container = document.getElementById('weatherResult');
+  container.innerHTML = '';
+
+  if (!data || !data.main || !data.weather) {
+    container.textContent = `Nu s-au găsit date pentru "${cityName}".`;
+    return;
+  }
+
+  const city = document.createElement('h2');
+  city.textContent = data.name;
+
+  const temp = document.createElement('p');
+  const symbol = data.units === 'imperial' ? '°F' : '°C';
+  temp.textContent = `Temperatura: ${Math.round(data.main.temp)}${symbol}`;
+
+  const desc = document.createElement('p');
+  desc.textContent = `Condiții: ${data.weather[0].description}`;
+
+  container.appendChild(city);
+  container.appendChild(temp);
+  container.appendChild(desc);
+};
+
+export const saveUserPreferences = (unit, lang) => {
+  localStorage.setItem('weatherAppPreferences', JSON.stringify({ unit, lang }));
+};
+
+export const loadUserPreferences = () => {
+  const stored = localStorage.getItem('weatherAppPreferences');
+  if (stored) {
+    return JSON.parse(stored);
+  }
+  return {
+    unit: 'metric',
+    lang: 'ro'
+  };
+};
+

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Aplicație meteo pentru verificarea vremii în diferite orașe">
@@ -86,3 +87,49 @@
     </div>
 </body>
 </html>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="app.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather App</h1>
+
+    
+    <div class="controls">
+      <div class="control-group">
+        <label for="unit-select">Unitatea temperaturii:</label>
+        <select id="unit-select">
+          <option value="metric">°C</option>
+          <option value="imperial">°F</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="lang-select">Limba descrierilor:</label>
+        <select id="lang-select">
+          <option value="ro">Română</option>
+          <option value="en">Engleză</option>
+          <option value="fr">Franceză</option>
+          <option value="de">Germană</option>
+          <option value="es">Spaniolă</option>
+        </select>
+      </div>
+    </div>
+
+    
+    <form id="weatherForm">
+      <label for="cityInput">Introduceți un oraș:</label>
+      <input type="text" id="cityInput" placeholder="ex: Iași" required />
+      <button type="submit" id="searchButton">Get Weather</button>
+    </form>
+
+    
+    <div id="weatherResult"></div>
+  </div>
+</body>
+</html>
+
