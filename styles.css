@@ -1,194 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-.hidden {
-    display: none;
-}
-
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: lightblue;
-    padding: 20px;
-    min-height: 100vh;
-}
-
-
-#app {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px gray;
-}
-
-
-.header {
-    background-color: steelblue;
-    color: white;
-    padding: 30px;
-    text-align: center;
-    border-radius: 10px 10px 0 0;
-}
-
-.header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.header p {
-    font-size: 16px;
-}
-
-
-.search-container {
-    padding: 30px;
-}
-
-.search-form {
-    margin-bottom: 20px;
-}
-
-
-#city-input {
-    width: 70%;
-    padding: 12px;
-    border: 2px solid lightgray;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-right: 10px;
-}
-
-#city-input:focus {
-    border-color: steelblue;
-    outline: none;
-}
-
-
-#search-btn {
-    padding: 12px 20px;
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#search-btn:hover {
-    background-color: darkgreen;
-}
-
-
-#loading {
-    text-align: center;
-    padding: 20px;
-    color: steelblue;
-    font-size: 16px;
-}
-
-
-.spinner {
-    border: 3px solid lightgray;
-    border-top: 3px solid steelblue;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    margin: 0 auto 10px;
-    animation: spin 1s infinite linear;
-}
-
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
-#error {
-    background-color: red;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-
-#weather-display {
-    background-color: lightgray;
-    border-radius: 8px;
-    margin-top: 20px;
-    border: 1px solid gray;
-}
-
-
-.weather-header {
-    background-color: teal;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px 8px 0 0;
-}
-
-#city-name {
-    font-size: 24px;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-#weather-description {
-    font-size: 16px;
-}
-
-
-.weather-main {
-    padding: 30px;
-    text-align: center;
-}
-
-
-#temperature {
-    font-size: 48px;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 20px;
-}
-
-
-.weather-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-
-.weather-item {
-    background-color: white;
-    padding: 15px;
-    border-radius: 5px;
-    text-align: center;
-    border: 1px solid gray;
-}
-
-.weather-item .label {
-    font-size: 14px;
-    color: gray;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
-.weather-item .value {
-    font-size: 18px;
-    font-weight: bold;
-    color: black;
-}
-
 body {
   margin: 0;
   font-family: sans-serif;
@@ -293,6 +102,69 @@ h1 {
   margin: 0.3em 0;
 }
 
+/* Stilizare pentru secțiunea de istoric */
+.history-section {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid #fff;
+  border-radius: 8px;
+  padding: 1em;
+  margin-top: 1em;
+}
+
+.history-section h3 {
+  font-size: 1.1em;
+  margin-bottom: 0.5em;
+  color: #fff;
+}
+
+.history-item {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.6em;
+  margin-bottom: 0.6em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.history-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.history-location {
+  font-weight: bold;
+  color: #fff;
+}
+
+.history-time {
+  font-size: 0.85em;
+  color: #f0f0f0;
+  margin-top: 0.2em;
+}
+
+.no-history {
+  font-style: italic;
+  color: #eee;
+}
+
+.clear-history-btn {
+  margin-top: 0.5em;
+  padding: 0.4em 1em;
+  font-size: 0.9em;
+  border: none;
+  border-radius: 4px;
+  background-color: #c0392b;
+  color: white;
+  cursor: pointer;
+}
+
+.clear-history-btn:hover {
+  background-color: #e74c3c;
+}
+
+.hidden {
+  display: none;
+}
+
 @media (max-width: 480px) {
   .control-group {
     flex-direction: column;
@@ -305,5 +177,18 @@ h1 {
 
   #cityInput {
     max-width: 100%;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

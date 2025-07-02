@@ -1,93 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aplicație meteo pentru verificarea vremii în diferite orașe">
-    <title>Weather App</title>
-    <link rel="stylesheet" href="styles.css">
-    <script type="module" src="app.js" defer></script>
-</head>
-<body>
-    <div id="app">
-        <div class="header">
-            <h1> Weather App</h1>
-            <p>Verifică vremea în orașul tău</p>
-        </div>
-        
-        <div class="search-container">
-            <div class="search-form">
-                <input type="text" id="city-input" placeholder="Introdu numele orașului..." autocomplete="off">
-                <button id="search-btn">Caută</button>
-            </div>
-            
-            <div id="loading" class="hidden">
-                <div class="spinner"></div>
-                Se încarcă datele meteo...
-            </div>
-            
-            <div id="error" class="hidden">
-                <strong>Eroare!</strong> Nu s-au putut încărca datele meteo.
-            </div>
-            
-            <div id="weather-display" class="hidden">
-                <div class="weather-header">
-                    <div id="city-name">Iasi</div>
-                    <div id="weather-description">Înnorat</div>
-                </div>
-                
-                <div class="weather-main">
-                    <div id="temperature">22°C</div>
-                    
-                    <div class="weather-details">
-                        <div class="weather-item">
-                            <div class="label">Senzație termică</div>
-                            <div class="value" id="feels-like">24°C</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Umiditate</div>
-                            <div class="value" id="humidity">65%</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Presiune</div>
-                            <div class="value" id="pressure">1013 mb</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Vânt</div>
-                            <div class="value" id="wind-speed">12 km/h</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Vizibilitate</div>
-                            <div class="value" id="visibility">10 km</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Răsărit</div>
-                            <div class="value" id="sunrise">06:30</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Apus</div>
-                            <div class="value" id="sunset">19:45</div>
-                        </div>
-                        
-                        <div class="weather-item">
-                            <div class="label">Index UV</div>
-                            <div class="value" id="uv-index">5</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
@@ -98,7 +11,7 @@
   <div class="container">
     <h1>Weather App</h1>
 
-    
+    <!-- Selectare unități și limbă -->
     <div class="controls">
       <div class="control-group">
         <label for="unit-select">Unitatea temperaturii:</label>
@@ -107,7 +20,6 @@
           <option value="imperial">°F</option>
         </select>
       </div>
-
       <div class="control-group">
         <label for="lang-select">Limba descrierilor:</label>
         <select id="lang-select">
@@ -120,16 +32,24 @@
       </div>
     </div>
 
-    
+    <!-- Căutare oraș -->
     <form id="weatherForm">
       <label for="cityInput">Introduceți un oraș:</label>
       <input type="text" id="cityInput" placeholder="ex: Iași" required />
-      <button type="submit" id="searchButton">Get Weather</button>
+      <button type="submit" id="searchButton">Afișează vremea</button>
     </form>
 
-    
+    <!-- Rezultat meteo -->
     <div id="weatherResult"></div>
+
+    <!-- Istoric căutări -->
+    <div id="history-section" class="history-section hidden">
+      <h3>Căutări recente</h3>
+      <div id="history-list" class="history-list"></div>
+      <button id="clear-history-btn" class="clear-history-btn">
+        Șterge istoricul
+      </button>
+    </div>
   </div>
 </body>
 </html>
-

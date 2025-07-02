@@ -1,122 +1,22 @@
+// Obține elementele din DOM
 export const elements = {
-  cityInput: document.querySelector('#city-input'),
-  searchBtn: document.querySelector('#search-btn'),
-  loading: document.querySelector('#loading'),
-  error: document.querySelector('#error'),
-  weatherDisplay: document.querySelector('#weather-display'),
-  cityName: document.querySelector('#city-name'),
-  weatherDescription: document.querySelector('#weather-description'),
-  temperature: document.querySelector('#temperature'),
-  feelsLike: document.querySelector('#feels-like'),
-  humidity: document.querySelector('#humidity'),
-  pressure: document.querySelector('#pressure'),
-  windSpeed: document.querySelector('#wind-speed'),
-  visibility: document.querySelector('#visibility'),
-  sunrise: document.querySelector('#sunrise'),
-  sunset: document.querySelector('#sunset'),
-  uvIndex: document.querySelector('#uv-index')
-};
-
-export function showLoading() {
-  elements.loading.classList.remove('hidden');
-  elements.error.classList.add('hidden');
-  elements.weatherDisplay.classList.add('hidden');
-}
-
-export function hideLoading() {
-  elements.loading.classList.add('hidden');
-}
-
-export function showError(message) {
-  hideLoading();
-  elements.error.textContent = message || 'Nu s-au putut încărca datele meteo.';
-  elements.error.classList.remove('hidden');
-  elements.weatherDisplay.classList.add('hidden');
-}
-
-
-export function displayWeather(weatherData) {
-  try {
-    hideLoading();
-    elements.error.classList.add('hidden');
-    
-    //numele orașului
-    elements.cityName.textContent = weatherData.name;
-    
-    //descrierea vremii
-    elements.weatherDescription.textContent = weatherData.weather[0].description;
-    
-    //temperatura principală
-    elements.temperature.textContent = Math.round(weatherData.main.temp) + '°C';
-    
-    //senzația termică
-    elements.feelsLike.textContent = Math.round(weatherData.main.feels_like) + '°C';
-    
-    //umiditatea
-    elements.humidity.textContent = weatherData.main.humidity + '%';
-    
-    //presiunea
-    elements.pressure.textContent = weatherData.main.pressure + ' mb';
-    
-    // Convertește viteza vântului din m/s în km/h și actualizează
-    const windSpeedKmh = Math.round(weatherData.wind.speed * 3.6);
-    elements.windSpeed.textContent = windSpeedKmh + ' km/h';
-    
-    //convertește din metri în kilometri
-    const visibilityKm = weatherData.visibility / 1000;
-    elements.visibility.textContent = visibilityKm + ' km';
-    
-    const sunriseTime = formatUnixTime(weatherData.sys.sunrise);
-    elements.sunrise.textContent = sunriseTime;
-    
-    const sunsetTime = formatUnixTime(weatherData.sys.sunset);
-    elements.sunset.textContent = sunsetTime;
-    
-    // Valoare simulată
-    elements.uvIndex.textContent = '5';
-    
-    elements.weatherDisplay.classList.remove('hidden');
-    
-  } catch (error) {
-    console.log('Eroare la afișarea datelor meteo:', error);
-    showError('Eroare la afișarea datelor meteo');
-  }
-}
-
-export function getCityInput() {
-  return elements.cityInput.value.trim();
-}
-
-export function clearInput() {
-  elements.cityInput.value = '';
-}
-
-//formatarea timpului Unix în timp local
-function formatUnixTime(unixTime) {
-  const date = new Date(unixTime * 1000);
-  let hours = date.getHours().toString();
-  let minutes = date.getMinutes().toString();
-  
-  if (hours.length === 1) {
-    hours = '0' + hours;
-  }
-  if (minutes.length === 1) {
-    minutes = '0' + minutes;
-  }
-  
-  return hours + ':' + minutes;
-}
-
-export const getElements = () => ({
   cityInput: document.getElementById('cityInput'),
   unitSelect: document.getElementById('unit-select'),
   langSelect: document.getElementById('lang-select'),
-  weatherDisplay: document.getElementById('weatherResult')
-});
+  weatherDisplay: document.getElementById('weatherResult'),
+  historySection: document.getElementById('history-section'),
+  historyList: document.getElementById('history-list'),
+  clearHistoryBtn: document.getElementById('clear-history-btn')
+};
 
+// Returnează elementele - folosit de app.js
+export const getElements = () => elements;
+
+// ✅ UI pentru vreme
 export const updateWeatherUI = (data, cityName) => {
-  const container = document.getElementById('weatherResult');
+  const container = elements.weatherDisplay;
   container.innerHTML = '';
+  container.classList.remove('fade-in');
 
   if (!data || !data.main || !data.weather) {
     container.textContent = `Nu s-au găsit date pentru "${cityName}".`;
@@ -136,8 +36,11 @@ export const updateWeatherUI = (data, cityName) => {
   container.appendChild(city);
   container.appendChild(temp);
   container.appendChild(desc);
+
+  container.classList.add('fade-in');
 };
 
+// ✅ Salvare / încărcare preferințe
 export const saveUserPreferences = (unit, lang) => {
   localStorage.setItem('weatherAppPreferences', JSON.stringify({ unit, lang }));
 };
@@ -153,3 +56,67 @@ export const loadUserPreferences = () => {
   };
 };
 
+// ✅ Afișare istoric
+export const showHistory = () => {
+  elements.historySection?.classList.remove('hidden');
+};
+
+export const hideHistory = () => {
+  elements.historySection?.classList.add('hidden');
+};
+
+export const renderHistory = (historyItems) => {
+  if (!elements.historyList) return;
+
+  if (historyItems.length === 0) {
+    elements.historyList.innerHTML = '<p class="no-history">Nu ai căutări recente</p>';
+    return;
+  }
+
+  const historyHTML = historyItems.map((item) => {
+    const timeAgo = getTimeAgo(item.timestamp);
+    return `
+      <div class="history-item" data-city="${item.city}" data-lat="${item.coordinates.lat}" data-lon="${item.coordinates.lon}">
+        <div class="history-location">
+          <span class="city">${item.city}</span>, 
+          <span class="country">${item.country}</span>
+        </div>
+        <div class="history-time">${timeAgo}</div>
+      </div>
+    `;
+  }).join('');
+
+  elements.historyList.innerHTML = historyHTML;
+};
+
+// ✅ Evenimente pentru click pe istoric și ștergere
+export const addHistoryEventListeners = (onClickItem, onClear) => {
+  if (elements.historyList) {
+    elements.historyList.addEventListener('click', (e) => {
+      const item = e.target.closest('.history-item');
+      if (item) {
+        const city = item.dataset.city;
+        const lat = item.dataset.lat;
+        const lon = item.dataset.lon;
+        onClickItem(city, lat, lon);
+      }
+    });
+  }
+
+  if (elements.clearHistoryBtn) {
+    elements.clearHistoryBtn.addEventListener('click', onClear);
+  }
+};
+
+// ✅ Utilitar pentru afișare "acum X minute/ore"
+const getTimeAgo = (timestamp) => {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 60) return `${minutes} minute în urmă`;
+  if (hours < 24) return `${hours} ore în urmă`;
+  return `${days} zile în urmă`;
+};
